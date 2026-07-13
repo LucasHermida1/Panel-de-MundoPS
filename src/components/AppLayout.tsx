@@ -1,17 +1,26 @@
-import { AppShell, Burger, Group, NavLink, Text, Title } from '@mantine/core';
+import { AppShell, Burger, Group, NavLink, Text, ThemeIcon, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import {
+  IconDeviceGamepad2,
+  IconLayoutDashboard,
+  IconPackage,
+  IconReceipt2,
+  IconSettings,
+  type Icon,
+} from '@tabler/icons-react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
 interface NavItem {
   label: string;
   path: string;
+  icon: Icon;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Resumen', path: '/' },
-  { label: 'Pedidos', path: '/pedidos' },
-  { label: 'Productos', path: '/productos' },
-  { label: 'Configuración', path: '/configuracion' },
+  { label: 'Resumen', path: '/', icon: IconLayoutDashboard },
+  { label: 'Pedidos', path: '/pedidos', icon: IconReceipt2 },
+  { label: 'Productos', path: '/productos', icon: IconPackage },
+  { label: 'Configuración', path: '/configuracion', icon: IconSettings },
 ];
 
 export function AppLayout() {
@@ -27,8 +36,13 @@ export function AppLayout() {
       <AppShell.Header>
         <Group h="100%" px="md" gap="sm">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          <ThemeIcon size={38} radius="md" variant="filled">
+            <IconDeviceGamepad2 size={24} stroke={1.6} />
+          </ThemeIcon>
           <div>
-            <Title order={3}>MundoPS</Title>
+            <Title order={3} lh={1.1}>
+              MundoPS
+            </Title>
             <Text size="xs" c="dimmed">
               Tienda PlayStation 5 · Montevideo
             </Text>
@@ -37,19 +51,24 @@ export function AppLayout() {
       </AppShell.Header>
 
       <AppShell.Navbar p="xs">
-        {NAV_ITEMS.map((item) => (
-          <NavLink
-            key={item.path}
-            component={Link}
-            to={item.path}
-            label={item.label}
-            active={location.pathname === item.path}
-            onClick={close}
-          />
-        ))}
+        {NAV_ITEMS.map((item) => {
+          const Icon = item.icon;
+          return (
+            <NavLink
+              key={item.path}
+              component={Link}
+              to={item.path}
+              label={item.label}
+              leftSection={<Icon size={18} stroke={1.6} />}
+              active={location.pathname === item.path}
+              onClick={close}
+              style={{ borderRadius: 'var(--mantine-radius-md)' }}
+            />
+          );
+        })}
       </AppShell.Navbar>
 
-      <AppShell.Main>
+      <AppShell.Main bg="var(--mantine-color-gray-0)">
         <Outlet />
       </AppShell.Main>
     </AppShell>
