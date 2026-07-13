@@ -9,6 +9,7 @@ import {
   type Icon,
 } from '@tabler/icons-react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useConfig } from '../context/ConfigContext';
 
 interface NavItem {
   label: string;
@@ -26,6 +27,7 @@ const NAV_ITEMS: NavItem[] = [
 export function AppLayout() {
   const [opened, { toggle, close }] = useDisclosure();
   const location = useLocation();
+  const { comercio } = useConfig();
 
   return (
     <AppShell
@@ -41,10 +43,10 @@ export function AppLayout() {
           </ThemeIcon>
           <div>
             <Title order={3} lh={1.1}>
-              MundoPS
+              {comercio.nombre}
             </Title>
             <Text size="xs" c="dimmed">
-              Tienda PlayStation 5 · Montevideo
+              {comercio.direccion}
             </Text>
           </div>
         </Group>

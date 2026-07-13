@@ -18,6 +18,13 @@ export interface ItemPedido {
   precioUnitario: number; // precio al momento del pedido
 }
 
+export interface ComercioInfo {
+  nombre: string;
+  direccion: string;
+  telefono: string;
+  horario: string;
+}
+
 export interface Pedido {
   id: string;
   numero: number;
