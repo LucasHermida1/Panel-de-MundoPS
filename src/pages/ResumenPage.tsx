@@ -21,8 +21,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { pedidos } from '../data/pedidos';
-import { productos } from '../data/productos';
+import { useData } from '../context/DataContext';
 import { CATEGORIA_LABELS, formatCurrency, formatShortDate } from '../lib/format';
 import {
   averageTicket,
@@ -69,6 +68,7 @@ function KpiCard({ label, value, icon, detail }: KpiCardProps) {
 export function ResumenPage() {
   const theme = useMantineTheme();
   const chartColor = theme.colors[theme.primaryColor][6];
+  const { pedidos, productos } = useData();
 
   const stats = useMemo(() => {
     const referenceDay = getLatestOrderDate(pedidos);
@@ -81,7 +81,7 @@ export function ResumenPage() {
       porDia: salesByDay(pedidos, 30, referenceDay),
       porCategoria: salesByCategory(pedidos, productos),
     };
-  }, []);
+  }, [pedidos, productos]);
 
   const dailyChartData = stats.porDia.map((d) => ({
     dia: formatShortDate(d.fecha),
