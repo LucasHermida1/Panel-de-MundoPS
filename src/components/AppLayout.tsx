@@ -28,9 +28,9 @@ export function AppLayout() {
         <Group h="100%" px="md" gap="sm">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           <div>
-            <Title order={3}>La Esquina</Title>
+            <Title order={3}>MundoPS</Title>
             <Text size="xs" c="dimmed">
-              Almacén y cafetería · Montevideo
+              Tienda PlayStation 5 · Montevideo
             </Text>
           </div>
         </Group>

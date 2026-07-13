@@ -1,6 +1,6 @@
 export type EstadoPedido = 'pendiente' | 'confirmado' | 'entregado' | 'cancelado';
 
-export type CategoriaProducto = 'almacen' | 'cafeteria' | 'bebidas' | 'limpieza';
+export type CategoriaProducto = 'juegos' | 'accesorios' | 'consolas' | 'digital';
 
 export interface Producto {
   id: string;

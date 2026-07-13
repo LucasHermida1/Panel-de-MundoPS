@@ -121,6 +121,6 @@ export function salesByCategory(pedidos: Pedido[], productos: Producto[]): Categ
     }
   }
 
-  const categorias: CategoriaProducto[] = ['almacen', 'cafeteria', 'bebidas', 'limpieza'];
+  const categorias: CategoriaProducto[] = ['juegos', 'accesorios', 'consolas', 'digital'];
   return categorias.map((categoria) => ({ categoria, total: totals.get(categoria) ?? 0 }));
 }

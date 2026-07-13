@@ -16,8 +16,8 @@ export function formatShortDate(day: string): string {
 }
 
 export const CATEGORIA_LABELS: Record<CategoriaProducto, string> = {
-  almacen: 'Almacén',
-  cafeteria: 'Cafetería',
-  bebidas: 'Bebidas',
-  limpieza: 'Limpieza',
+  juegos: 'Juegos',
+  accesorios: 'Accesorios',
+  consolas: 'Consolas',
+  digital: 'Digital',
 };
