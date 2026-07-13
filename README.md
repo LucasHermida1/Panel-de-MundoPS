@@ -1,32 +1,45 @@
-# React + TypeScript + Vite
+# MundoPS — Store Management Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Admin dashboard for **MundoPS**, a fictional PlayStation 5 online store based in Montevideo, Uruguay (it mirrors the catalog of [my e-commerce demo site](https://lucashermida.com/e-commerce/inicio)). Fully client-side: all data is simulated with typed mock modules — no backend, no auth, no database.
 
-Currently, two official plugins are available:
+![Dashboard screenshot](docs/screenshot.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- **Overview** — KPI cards (monthly sales, order count, average ticket, top seller) computed from the mock data, plus daily sales and sales-by-category charts.
+- **Orders** — filterable table (status filter, debounced customer search, client-side pagination) with a detail drawer and status transitions enforced by a pure function (`pending -> confirmed -> delivered`, cancellable unless delivered).
+- **Products** — card grid with offer pricing, low-stock badges and a create/edit modal validated with `@mantine/form` (Spanish error messages, offer price must be below regular price).
+- **Settings** — store info form and a live brand-color picker that rebuilds the Mantine theme for the whole app in real time.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack
 
-## Expanding the Oxlint configuration
+- [Vite](https://vite.dev/) + [React 18](https://react.dev/) + TypeScript (strict mode)
+- [Mantine v7](https://mantine.dev/) for UI components and theming
+- [Recharts](https://recharts.org/) for charts
+- [React Router v6](https://reactrouter.com/)
+- No external state management — `useState` + two small contexts cover this scope
+- ESLint + Prettier
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Technical decisions
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+- **Strictly typed domain.** The whole model lives in [`src/types.ts`](src/types.ts) (union types for order status and product category, `stock: number | null` where `null` means unlimited). No `any` anywhere.
+- **Pure business logic, separated from UI.** KPI math ([`src/lib/stats.ts`](src/lib/stats.ts)), status transitions ([`src/lib/orderStatus.ts`](src/lib/orderStatus.ts)), product rules ([`src/lib/productRules.ts`](src/lib/productRules.ts)) and color-scale generation ([`src/lib/color.ts`](src/lib/color.ts)) are plain functions with no React imports — easy to test and to reason about.
+- **Deterministic mock data.** ~15 products and 60 orders spread over 30 days in [`src/data/`](src/data/). The dashboard derives "today" from the most recent order instead of `new Date()`, so the demo never renders empty.
+- **Dynamic Mantine theming.** `ConfigContext` wraps `MantineProvider`; changing the brand color rebuilds the theme and every component (buttons, badges, charts) picks it up live. A pure function derives the 10-shade Mantine color scale from a single hex.
+- **No persistence, on purpose.** Settings and data edits live in React state only. In production they would be persisted to a backend (or at minimum localStorage); keeping the demo stateless makes the mock-data reset behavior explicit.
+
+## Running it
+
+```bash
+npm install
+npm run dev      # dev server on http://localhost:5173
+npm run build    # type-checks and builds to dist/
+npm run lint     # eslint
+npm run format   # prettier
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+The build output in `dist/` is fully static. Note that routing uses the browser history API, so when hosting (GitHub Pages, Netlify, etc.) configure a SPA fallback to `index.html`.
+
+## About this project
+
+Built as my first React + TypeScript project, coming from a Laravel/Alpine background — using my AI-agent workflow with human review on every piece.

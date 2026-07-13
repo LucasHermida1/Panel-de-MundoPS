@@ -151,6 +151,7 @@ export function ResumenPage() {
               stroke={chartColor}
               strokeWidth={2}
               fill="url(#salesGradient)"
+              isAnimationActive={false}
             />
           </AreaChart>
         </ResponsiveContainer>
@@ -175,7 +176,12 @@ export function ResumenPage() {
               formatter={(value: number) => [formatCurrency(value), 'Ventas']}
               cursor={{ fill: 'rgba(0, 112, 209, 0.06)' }}
             />
-            <Bar dataKey="total" fill={chartColor} radius={[6, 6, 0, 0]} />
+            <Bar
+              dataKey="total"
+              fill={chartColor}
+              radius={[6, 6, 0, 0]}
+              isAnimationActive={false}
+            />
           </BarChart>
         </ResponsiveContainer>
       </Card>
